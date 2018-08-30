@@ -205,7 +205,7 @@ def get_data(data_dir, post_vocabulary_size, response_vocabulary_size):
         wordvec_response = mdict['response']
     except:
         print('loading word vector...')
-        raw_vector = load_word_vector(config.get('data', 'raw_wordvec'))
+        raw_vector = load_word_vector( os.path.join(data_dir, config.get('data', 'raw_wordvec')) )
         print('loading vocabulary...')
         vocab_post = load_vocab(os.path.join(data_dir, config.get('data', 'post_vocab_file') % post_vocabulary_size))
         vocab_response = load_vocab(os.path.join(data_dir, config.get('data', 'response_vocab_file') % response_vocabulary_size))

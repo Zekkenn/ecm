@@ -40,9 +40,9 @@ tf.app.flags.DEFINE_integer("emotion_size", 100, "Size of emotion embedding.")
 tf.app.flags.DEFINE_integer("imemory_size", 256, "Size of imemory.")
 tf.app.flags.DEFINE_integer("category", 6, "category of emotions.")
 tf.app.flags.DEFINE_integer("num_layers", 2, "Number of layers in the model.")
-tf.app.flags.DEFINE_integer("post_vocab_size", 40000, "post vocabulary size.")
-tf.app.flags.DEFINE_integer("response_vocab_size", 40000, "response vocabulary size.")
-tf.app.flags.DEFINE_string("data_dir", "/home/data/tux/sentchat_code/data", "Data directory")
+tf.app.flags.DEFINE_integer("post_vocab_size", 5, "post vocabulary size.")
+tf.app.flags.DEFINE_integer("response_vocab_size", 5, "response vocabulary size.")
+tf.app.flags.DEFINE_string("data_dir", "/home/estudiante/Documents/ecm/data", "Data directory")
 tf.app.flags.DEFINE_string("train_dir", "train", "Training directory.")
 tf.app.flags.DEFINE_string("pretrain_dir", "pretrain", "Pretraining directory.")
 tf.app.flags.DEFINE_integer("pretrain", -1, "pretrain model number")
@@ -126,7 +126,7 @@ def create_model(session, forward_only, beam_search):
             emotion_size=FLAGS.emotion_size,
             imemory_size=FLAGS.imemory_size,
             dtype=dtype)
-    see_variable = True
+    see_variable = False
     if see_variable == True:
         for i in tf.all_variables():
             print(i.name, i.get_shape())
@@ -208,6 +208,7 @@ def train():
             random_number_01 = np.random.random_sample()
             bucket_id = min([i for i in xrange(len(train_buckets_scale))
                                              if train_buckets_scale[i] > random_number_01])
+            sys.stdout.write( str(bucket_id) + '\n')
 
             # Get a batch and make a step.
             start_time = time.time()

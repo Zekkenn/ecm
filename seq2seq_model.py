@@ -11,7 +11,7 @@ import tensorflow as tf
 import data_utils
 import seq2seq
 import rnn_cell
-
+import sys
 
 class Seq2SeqModel(object):
 
@@ -238,11 +238,18 @@ class Seq2SeqModel(object):
         # pad them if needed, reverse encoder inputs and add GO to decoder.
         _emotion = np.random.randint(6)
 
+        sys.stdout.write('---------------------------------------------------------------\n')
+        sys.stdout.write('---------------------------------------------------------------\n')
+        sys.stdout.write( str(data[bucket_id]) )
+        sys.stdout.write('---------------------------------------------------------------\n')
+        sys.stdout.write('---------------------------------------------------------------\n')
         for _ in xrange(self.batch_size):
             decoder_emotion = -1
             while decoder_emotion != _emotion:
+                
+                #sys.stdout.write( str(decoder_emotion) + ' ' + str(_emotion) + '\n' )
+                
                 encoder_input, decoder_input, _, decoder_emotion = random.choice(data[bucket_id])
-
             # Encoder inputs are padded and then reversed.
             encoder_pad = [data_utils.PAD_ID] * (encoder_size - len(encoder_input))
             encoder_inputs.append(list(reversed(encoder_input + encoder_pad)))

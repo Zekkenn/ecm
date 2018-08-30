@@ -20,6 +20,8 @@ from tensorflow.python.ops import variable_scope
 from tensorflow.python.util import nest
 import tensorflow as tf
 import rnn_cell as my_rnn_cell
+
+import sys
 # TODO(ebrevdo): Remove once _linear is fully deprecated.
 linear = rnn_cell._linear    # pylint: disable=protected-access
 
@@ -688,7 +690,7 @@ def attention_decoder(decoder_inputs,
 
                 #hard gate
                 #g = tf.cast(tf.greater(g, 0.5), tf.float32)
-                
+
                 output0, output1 = tf.dynamic_partition(tf.transpose(logit), tf.cast(ememory, tf.int32), 2)
                 indice0, indice1 = tf.dynamic_partition(tf.range(ememory.get_shape()[-1].value), tf.cast(ememory, tf.int32), 2)
                 s0 = tf.nn.softmax(output0, dim=0) * (1-g)
