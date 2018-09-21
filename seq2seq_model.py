@@ -221,6 +221,7 @@ class Seq2SeqModel(object):
                 output_feed.append(self.outputs[bucket_id][l])
 
         outputs = session.run(output_feed, input_feed)
+
         if not forward_only:
             return outputs[1], outputs[3], None    # Gradient norm, loss, no outputs.
         else:
@@ -238,11 +239,11 @@ class Seq2SeqModel(object):
         # pad them if needed, reverse encoder inputs and add GO to decoder.
         _emotion = np.random.randint(6)
 
-        sys.stdout.write('---------------------------------------------------------------\n')
-        sys.stdout.write('---------------------------------------------------------------\n')
-        sys.stdout.write( str(data[bucket_id]) )
-        sys.stdout.write('---------------------------------------------------------------\n')
-        sys.stdout.write('---------------------------------------------------------------\n')
+        #sys.stdout.write('---------------------------------------------------------------\n')
+        #sys.stdout.write('---------------------------------------------------------------\n')
+        #sys.stdout.write( str(data[bucket_id]) )
+        #sys.stdout.write('---------------------------------------------------------------\n')
+        #sys.stdout.write('---------------------------------------------------------------\n')
         for _ in xrange(self.batch_size):
             decoder_emotion = -1
             while decoder_emotion != _emotion:

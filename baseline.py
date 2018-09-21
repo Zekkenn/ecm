@@ -40,15 +40,15 @@ tf.app.flags.DEFINE_integer("emotion_size", 100, "Size of emotion embedding.")
 tf.app.flags.DEFINE_integer("imemory_size", 256, "Size of imemory.")
 tf.app.flags.DEFINE_integer("category", 6, "category of emotions.")
 tf.app.flags.DEFINE_integer("num_layers", 2, "Number of layers in the model.")
-tf.app.flags.DEFINE_integer("post_vocab_size", 5, "post vocabulary size.")
-tf.app.flags.DEFINE_integer("response_vocab_size", 5, "response vocabulary size.")
-tf.app.flags.DEFINE_string("data_dir", "/home/estudiante/Documents/ecm/data", "Data directory")
+tf.app.flags.DEFINE_integer("post_vocab_size", 10, "post vocabulary size.")
+tf.app.flags.DEFINE_integer("response_vocab_size", 10, "response vocabulary size.")
+tf.app.flags.DEFINE_string("data_dir", "/home/local/LABINFO/2106457/Documents/ecm/data", "Data directory")
 tf.app.flags.DEFINE_string("train_dir", "train", "Training directory.")
 tf.app.flags.DEFINE_string("pretrain_dir", "pretrain", "Pretraining directory.")
 tf.app.flags.DEFINE_integer("pretrain", -1, "pretrain model number")
 tf.app.flags.DEFINE_integer("max_train_data_size", 0,
                                                         "Limit on the size of training data (0: no limit).")
-tf.app.flags.DEFINE_integer("steps_per_checkpoint", 1000,
+tf.app.flags.DEFINE_integer("steps_per_checkpoint", 10,
                                                         "How many training steps to do per checkpoint.")
 tf.app.flags.DEFINE_boolean("use_emb", False,
                                                         "use embedding model")
@@ -176,6 +176,9 @@ def train():
             FLAGS.data_dir, FLAGS.post_vocab_size, FLAGS.response_vocab_size)
 
     with tf.Session(config=sess_config) as sess:
+        # =================== Looooooooooooool =========================
+        train_writer = tf.summary.FileWriter( './logs/1/train ', sess.graph)
+        # =================== Looooooooooooool =========================
         # Create model.
         print("Creating %d layers of %d units." % (FLAGS.num_layers, FLAGS.size))
         model = create_model(sess, False, False)
@@ -208,17 +211,19 @@ def train():
             random_number_01 = np.random.random_sample()
             bucket_id = min([i for i in xrange(len(train_buckets_scale))
                                              if train_buckets_scale[i] > random_number_01])
-            sys.stdout.write( str(bucket_id) + '\n')
+            #sys.stdout.write( str(bucket_id) + '\n')
 
             # Get a batch and make a step.
             start_time = time.time()
             encoder_inputs, decoder_inputs, target_weights, decoder_emotions = model.get_batch(
                     train_set, bucket_id)
+            print( "============================ re lol - step ============================================" )
             _, step_loss, _ = model.step(sess, encoder_inputs, decoder_inputs,
                                                                      target_weights, decoder_emotions, bucket_id, False, False)
+
             step_time += (time.time() - start_time) / FLAGS.steps_per_checkpoint
             loss += step_loss / FLAGS.steps_per_checkpoint
-            current_step += 1
+            current_step += 1 ; print( "The current step is: " + str(current_step) )
 
             # Once in a while, we save checkpoint, print statistics, and run evals.
             if current_step % FLAGS.steps_per_checkpoint == 0:

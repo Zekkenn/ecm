@@ -705,6 +705,7 @@ def attention_decoder(decoder_inputs,
 
             outputs.append(output)
             gates.append(gate)
+    #tf.summary.histogram("Loss function 2", outputs[0])
     return outputs, state, imemory, ememory, gates
 
 def beam_attention_decoder(decoder_inputs,
